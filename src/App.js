@@ -205,7 +205,7 @@ export default function HangoutTimeline() {
   const handleShare = () => {
     const data = { people, activities, timeStart, timeEnd };
     try {
-      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+      const encoded = btoa(encodeURIComponent(JSON.stringify(data)));
       const url = `${window.location.origin}${window.location.pathname}#${encoded}`;
       navigator.clipboard.writeText(url).then(() => {
         setShareMsg("Link copied! (photos not included)");
@@ -255,13 +255,14 @@ export default function HangoutTimeline() {
         background: "#0D0D0D",
         color: "#E8E8E8",
         fontFamily: "'Inter', 'system-ui', -apple-system, 'Segoe UI', sans-serif",
-        padding: "32px 24px",
+        padding: "24px 16px",
+        boxSizing: "border-box",
         userSelect: dragging ? "none" : "auto",
       }}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
-      <div style={{ maxWidth: 1060, margin: "0 auto" }}>
+      <div style={{ maxWidth: 860, margin: "0 auto" }}>
 
         {/* ── Header ── */}
         <div style={{ marginBottom: 28, display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
@@ -288,8 +289,8 @@ export default function HangoutTimeline() {
               </span>
             )}
             <button onClick={handleShare} style={btnSecStyle}>🔗 Share Link</button>
-            <button onClick={handleExportJSON} style={btnSecStyle}>↓ Export</button>
-            <button onClick={() => setShowImport((v) => !v)} style={btnSecStyle}>↑ Import</button>
+            <button onClick={handleExportJSON} style={btnSecStyle}>↑ Export</button>
+            <button onClick={() => setShowImport((v) => !v)} style={btnSecStyle}>↓ Import</button>
           </div>
         </div>
 
@@ -355,7 +356,7 @@ export default function HangoutTimeline() {
               placeholder="e.g. Board Games"
               style={inputStyle}
             />
-            <select value={newActStart} onChange={(e) => setNewActStart(Number(e.target.value))} style={selectStyle}>{timeOpts}</select>
+            <select value={newActStart} onChange={(e) => { const v = Number(e.target.value); setNewActStart(v); if (v >= newActEnd) setNewActEnd(Math.min(v + 1, timeEnd)); }} style={selectStyle}>{timeOpts}</select>
             <span style={{ color: "#555", fontSize: 13 }}>→</span>
             <select value={newActEnd} onChange={(e) => setNewActEnd(Number(e.target.value))} style={selectStyle}>{timeOpts}</select>
             <button onClick={addActivity} style={btnStyle}>+ Add</button>
@@ -382,7 +383,7 @@ export default function HangoutTimeline() {
               placeholder="Name"
               style={{ ...inputStyle, flex: "1 1 100px", minWidth: 80 }}
             />
-            <select value={newStart} onChange={(e) => setNewStart(Number(e.target.value))} style={selectStyle}>{timeOpts}</select>
+            <select value={newStart} onChange={(e) => { const v = Number(e.target.value); setNewStart(v); if (v >= newEnd) setNewEnd(Math.min(v + 1, timeEnd)); }} style={selectStyle}>{timeOpts}</select>
             <span style={{ color: "#555", fontSize: 13 }}>→</span>
             <select value={newEnd} onChange={(e) => setNewEnd(Number(e.target.value))} style={selectStyle}>{timeOpts}</select>
             <button onClick={addPerson} style={btnStyle}>+ Add</button>
@@ -525,7 +526,7 @@ export default function HangoutTimeline() {
           style={{
             background: "#161616",
             borderRadius: 12,
-            padding: "22px 52px 18px 22px",
+            padding: "20px 40px 16px 20px",
             border: "1px solid #222",
             overflowX: "auto",
           }}
@@ -844,7 +845,7 @@ export default function HangoutTimeline() {
                 <div style={fieldLabel}>Arrival</div>
                 <select
                   value={editingPerson.start}
-                  onChange={(e) => setEditingPerson((ep) => ({ ...ep, start: Number(e.target.value) }))}
+                  onChange={(e) => { const v = Number(e.target.value); setEditingPerson((ep) => ({ ...ep, start: v, end: v >= ep.end ? Math.min(v + 1, timeEnd) : ep.end })); }}
                   style={{ ...selectStyle, width: "100%" }}
                 >
                   {timeOpts}
