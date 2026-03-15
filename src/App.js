@@ -358,7 +358,7 @@ export default function HangoutTimeline() {
             />
             <select value={newActStart} onChange={(e) => { const v = Number(e.target.value); setNewActStart(v); if (v >= newActEnd) setNewActEnd(Math.min(v + 1, timeEnd)); }} style={selectStyle}>{timeOpts}</select>
             <span style={{ color: "#555", fontSize: 13 }}>→</span>
-            <select value={newActEnd} onChange={(e) => setNewActEnd(Number(e.target.value))} style={selectStyle}>{timeOpts}</select>
+            <select value={newActEnd} onChange={(e) => { const v = Number(e.target.value); setNewActEnd(v); if (v <= newActStart) setNewActStart(Math.max(v - 1, timeStart)); }} style={selectStyle}>{timeOpts}</select>
             <button onClick={addActivity} style={btnStyle}>+ Add</button>
           </div>
           {activities.map((a) => (
@@ -385,7 +385,7 @@ export default function HangoutTimeline() {
             />
             <select value={newStart} onChange={(e) => { const v = Number(e.target.value); setNewStart(v); if (v >= newEnd) setNewEnd(Math.min(v + 1, timeEnd)); }} style={selectStyle}>{timeOpts}</select>
             <span style={{ color: "#555", fontSize: 13 }}>→</span>
-            <select value={newEnd} onChange={(e) => setNewEnd(Number(e.target.value))} style={selectStyle}>{timeOpts}</select>
+            <select value={newEnd} onChange={(e) => { const v = Number(e.target.value); setNewEnd(v); if (v <= newStart) setNewStart(Math.max(v - 1, timeStart)); }} style={selectStyle}>{timeOpts}</select>
             <button onClick={addPerson} style={btnStyle}>+ Add</button>
           </div>
         </div>
@@ -409,9 +409,9 @@ export default function HangoutTimeline() {
           {sortedPhotos.length > 0 && (
             <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
               {sortedPhotos.map((p) => (
-                <div key={p.id} style={{ position: "relative", width: 120 }}>
+                <div key={p.id} style={{ position: "relative", width: 160 }}>
                   {editingPhoto === p.id ? (
-                    <div style={{ background: "#111", borderRadius: 10, padding: 10, width: 120, boxSizing: "border-box", border: "1px solid #333" }}>
+                    <div style={{ background: "#111", borderRadius: 10, padding: 10, width: 160, boxSizing: "border-box", border: "1px solid #333" }}>
                       <div style={{ fontSize: 10, color: "#666", marginBottom: 4 }}>Caption</div>
                       <input
                         defaultValue={p.caption}
@@ -442,8 +442,8 @@ export default function HangoutTimeline() {
                         alt={p.caption || "photo"}
                         onClick={() => setLightbox(p)}
                         style={{
-                          width: 120,
-                          height: 120,
+                          width: 160,
+                          height: 160,
                           objectFit: "cover",
                           borderRadius: 8,
                           border: "2px solid #2a2a2a",
@@ -572,7 +572,7 @@ export default function HangoutTimeline() {
           {/* Photo pins row */}
           {sortedPhotos.length > 0 && (
             <div style={{ position: "relative", marginBottom: 12 }}>
-              <div style={{ position: "relative", height: 52, marginLeft: 116 }}>
+              <div style={{ position: "relative", height: 72, marginLeft: 116 }}>
                 {sortedPhotos.map((p) => (
                   <div
                     key={p.id}
@@ -591,12 +591,12 @@ export default function HangoutTimeline() {
                       src={p.src}
                       alt={p.caption || ""}
                       style={{
-                        width: 38,
-                        height: 38,
+                        width: 58,
+                        height: 58,
                         objectFit: "cover",
-                        borderRadius: 5,
+                        borderRadius: 7,
                         border: "2px solid #E8645A",
-                        boxShadow: "0 0 10px rgba(232,100,90,0.35)",
+                        boxShadow: "0 0 12px rgba(232,100,90,0.4)",
                       }}
                     />
                     <div style={{ width: 1, height: 10, background: "#E8645A55" }} />
@@ -855,7 +855,7 @@ export default function HangoutTimeline() {
                 <div style={fieldLabel}>Departure</div>
                 <select
                   value={editingPerson.end}
-                  onChange={(e) => setEditingPerson((ep) => ({ ...ep, end: Number(e.target.value) }))}
+                  onChange={(e) => { const v = Number(e.target.value); setEditingPerson((ep) => ({ ...ep, end: v, start: v <= ep.start ? Math.max(v - 1, timeStart) : ep.start })); }}
                   style={{ ...selectStyle, width: "100%" }}
                 >
                   {timeOpts}
