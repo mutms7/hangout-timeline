@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import './style.css';
 
 const HOURS = [];
 for (let h = 15; h <= 28; h++) {
