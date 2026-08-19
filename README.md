@@ -4,6 +4,12 @@ I wanted a neat way to organize data about hangouts I go on — who showed up, w
 
 **Live at [hangout-timeline.vercel.app](https://hangout-timeline.vercel.app/)**
 
+![Empty timeline with time range, activity, person, and photo inputs ready to fill in](docs/screenshots/empty-timeline.png)
+
+![Populated timeline with two activity phases, three color-coded people bars, and an uploaded photo](docs/screenshots/populated-timeline.png)
+
+![Photo lightbox view showing an uploaded picture with its caption and timestamp](docs/screenshots/photo-lightbox.png)
+
 ## What it does
 
 - **People timeline** — Add names with arrival/departure times and see them as color-coded bars on a 3PM–4AM timeline. Drag the edges of any bar to adjust times after the fact.
